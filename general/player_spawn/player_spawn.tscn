@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c0f6mxwx8kue2"]
+
+[ext_resource type="Texture2D" uid="uid://bkjh3dve1js5e" path="res://metroidvania_project/player/sprites/hero.png" id="1_2y6re"]
+[ext_resource type="Script" uid="uid://bg3akwem0ttjs" path="res://metroidvania_project/general/player_spawn/player_spawn.gd" id="1_h1cw5"]
+
+[node name="PlayerSpawn" type="Node2D" unique_id=956055102]
+modulate = Color(0, 2.034382, 0.99367136, 1)
+z_index = 1
+script = ExtResource("1_h1cw5")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1779234801]
+position = Vector2(0, -41)
+texture = ExtResource("1_2y6re")
+hframes = 16
+vframes = 4
