@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://b5fhl1vpgd5bp"]
+
+[ext_resource type="Script" uid="uid://cjcq15e8oodln" path="res://metroidvania_project/pause_menu/scripts/map_node.gd" id="1_xtooa"]
+
+[node name="MapNode" type="Control" unique_id=606609628]
+custom_minimum_size = Vector2(12, 6)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 12.0
+offset_bottom = 6.0
+script = ExtResource("1_xtooa")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=372338029]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=1138897288]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ColorRect3" type="ColorRect" parent="." unique_id=1780548318]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ColorRect4" type="ColorRect" parent="." unique_id=829339115]
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="." unique_id=779170416]
+layout_mode = 0
+offset_left = 3.9999998
+offset_top = 1.9999999
+offset_right = 37.0
+offset_bottom = 17.0
+scale = Vector2(0.1, 0.1)
+text = "Name"
+
+[node name="TransistionBlock" type="Control" parent="." unique_id=270020973]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

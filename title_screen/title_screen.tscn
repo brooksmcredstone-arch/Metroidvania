@@ -1,0 +1,225 @@
+[gd_scene format=3 uid="uid://dsrlfrd8caygw"]
+
+[ext_resource type="Texture2D" uid="uid://dibn2bhnl4gnn" path="res://metroidvania_project/title_screen/metroidvania_logo.png" id="1_cpt3c"]
+[ext_resource type="Script" uid="uid://clkwttbtecghp" path="res://metroidvania_project/title_screen/title_screen.gd" id="1_jfhqh"]
+[ext_resource type="Script" uid="uid://c2kpniceothlh" path="res://metroidvania_project/music/music_auto_trigger.gd" id="3_lq628"]
+[ext_resource type="AudioStream" uid="uid://c6heb1fldb00f" path="res://metroidvania_project/music/title_01.ogg" id="4_02oah"]
+
+[sub_resource type="Animation" id="Animation_02oah"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_4i3r1"]
+resource_name = "loop"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.90000004),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+}
+
+[sub_resource type="Animation" id="Animation_lq628"]
+resource_name = "start"
+length = 0.6
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45000002, 0.5, 0.55),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lq628"]
+_data = {
+&"RESET": SubResource("Animation_02oah"),
+&"loop": SubResource("Animation_4i3r1"),
+&"start": SubResource("Animation_lq628")
+}
+
+[node name="TitleScreen" type="CanvasLayer" unique_id=494349141]
+layer = 5
+script = ExtResource("1_jfhqh")
+
+[node name="Control" type="Control" parent="." unique_id=1540227847]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=315133160]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.44799572, 0.6287258, 0.67650515, 1)
+
+[node name="TilemapContainer" type="Control" parent="Control" unique_id=651018028]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" type="VBoxContainer" parent="Control" unique_id=990393494]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.47700003
+anchor_top = 0.54300004
+anchor_right = 0.47700003
+anchor_bottom = 0.54300004
+offset_left = -90.96001
+offset_top = -105.610016
+offset_right = 91.03999
+offset_bottom = 79.389984
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="Logo" type="Control" parent="Control/MainMenu" unique_id=270852036]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="Control/MainMenu/Logo" unique_id=571123711]
+position = Vector2(1, 38)
+texture = ExtResource("1_cpt3c")
+hframes = 8
+vframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/MainMenu/Logo" unique_id=1737192540]
+root_node = NodePath("../Sprite2D")
+libraries/ = SubResource("AnimationLibrary_lq628")
+autoplay = &"start"
+
+[node name="NewGame" type="Button" parent="Control/MainMenu" unique_id=2048520365]
+unique_name_in_owner = true
+layout_mode = 2
+text = "New Game"
+
+[node name="LoadGame" type="Button" parent="Control/MainMenu" unique_id=524071953]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load Game"
+
+[node name="NewGameMenu" type="VBoxContainer" parent="Control" unique_id=1343273069]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.0
+offset_top = -48.0
+offset_right = 87.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="Control/NewGameMenu" unique_id=1389680736]
+modulate = Color(0.6745098, 0.19607843, 0.19607843, 1)
+layout_mode = 2
+text = "Start a New Game..."
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="Control/NewGameMenu" unique_id=1048901136]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="NewSlot1" type="Button" parent="Control/NewGameMenu" unique_id=600796963]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Begin Slot 01"
+
+[node name="NewSlot2" type="Button" parent="Control/NewGameMenu" unique_id=1900865448]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Begin Slot 02"
+
+[node name="NewSlot3" type="Button" parent="Control/NewGameMenu" unique_id=928996772]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Begin Slot 03"
+
+[node name="LoadGameMenu" type="VBoxContainer" parent="Control" unique_id=1500065407]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -87.0
+offset_top = -48.0
+offset_right = 87.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="Control/LoadGameMenu" unique_id=104451938]
+modulate = Color(0.6745098, 0.19607843, 0.19607843, 1)
+layout_mode = 2
+text = "Load a Saved Game..."
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="Control/LoadGameMenu" unique_id=1211377269]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="LoadSlot1" type="Button" parent="Control/LoadGameMenu" unique_id=1295216992]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load Slot 01"
+
+[node name="LoadSlot2" type="Button" parent="Control/LoadGameMenu" unique_id=885409100]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load Slot 02"
+
+[node name="LoadSlot3" type="Button" parent="Control/LoadGameMenu" unique_id=252756750]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Load Slot 03"
+
+[node name="MusicAutoTrigger" type="Node" parent="." unique_id=1088901560]
+script = ExtResource("3_lq628")
+track = ExtResource("4_02oah")
+metadata/_custom_type_script = "uid://c2kpniceothlh"

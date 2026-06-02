@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cy5y5ar7h5ro4"]
+
+[ext_resource type="Shader" uid="uid://br6015fiah73r" path="res://material_and_shaders/fog_fade_shader.tres" id="1_cgege"]
+
+[resource]
+shader = ExtResource("1_cgege")
