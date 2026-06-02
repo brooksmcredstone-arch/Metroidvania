@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="HitParticleSettings" format=3 uid="uid://cq2u8uieib3bf"]
+
+[ext_resource type="Script" uid="uid://bb1visiehsweq" path="res://metroidvania_project/00_global/visual effects/hit_particle_settings.gd" id="1_jr3o3"]
+[ext_resource type="Texture2D" uid="uid://dgtxg5nnvdgaa" path="res://metroidvania_project/general/sprites/props_destructible.png" id="2_1b540"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r7lid"]
+atlas = ExtResource("2_1b540")
+region = Rect2(121, 7, 2, 2)
+
+[resource]
+script = ExtResource("1_jr3o3")
+texture = SubResource("AtlasTexture_r7lid")
+color = Color(1, 1, 1, 0)
+count = 16
+metadata/_custom_type_script = "uid://bb1visiehsweq"

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://bgssuupd2e77p"]
+
+[ext_resource type="Script" uid="uid://d1pqercngckcq" path="res://metroidvania_project/00_global/audio/audio.gd" id="1_rqhod"]
+[ext_resource type="AudioStream" uid="uid://mr3q67u41jpl" path="res://metroidvania_project/00_global/audio/ui_audio/ui_bloop_audio.wav" id="2_51rxd"]
+[ext_resource type="AudioStream" uid="uid://bjir7waqd3v3g" path="res://metroidvania_project/00_global/audio/ui_audio/ui_select_audio.wav" id="3_l2yry"]
+[ext_resource type="AudioStream" uid="uid://bb2gand7pl0ie" path="res://metroidvania_project/00_global/audio/ui_audio/ui_woosh.wav" id="4_c2q5y"]
+[ext_resource type="AudioStream" uid="uid://8uaqi1wbjm8h" path="res://metroidvania_project/00_global/audio/ui_audio/ui_success_audio.wav" id="5_ooctw"]
+[ext_resource type="AudioStream" uid="uid://fxg6cm20xaar" path="res://metroidvania_project/00_global/audio/ui_audio/ui_error_audio.wav" id="6_jrcor"]
+
+[node name="Audio" type="Node2D" unique_id=1287204645]
+script = ExtResource("1_rqhod")
+ui_focus_audio = ExtResource("2_51rxd")
+ui_select_audio = ExtResource("3_l2yry")
+ui_cancel_audio = ExtResource("4_c2q5y")
+ui_error_audio = ExtResource("6_jrcor")
+ui_success_audio = ExtResource("5_ooctw")
+
+[node name="Music1" type="AudioStreamPlayer" parent="." unique_id=205186121]
+unique_name_in_owner = true
+
+[node name="Music2" type="AudioStreamPlayer" parent="." unique_id=199386120]
+unique_name_in_owner = true
+
+[node name="UI" type="AudioStreamPlayer" parent="." unique_id=200175739]
+unique_name_in_owner = true

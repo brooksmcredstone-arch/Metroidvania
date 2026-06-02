@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://csbno6t1ibhjk"]
+
+[ext_resource type="Script" uid="uid://bodwwxy07bn7t" path="res://metroidvania_project/general/door_and_switch/switch.gd" id="1_6k0up"]
+[ext_resource type="Texture2D" uid="uid://mth3nf8yjn42" path="res://metroidvania_project/general/door_and_switch/door_and_switch.png" id="1_75rng"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_75rng"]
+size = Vector2(32.25, 27.25)
+
+[node name="Switch" type="Node2D"]
+script = ExtResource("1_6k0up")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("1_75rng")
+vframes = 3
+frame = 2
+region_rect = Rect2(0, 32, 32, 21)
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -16)
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_75rng")

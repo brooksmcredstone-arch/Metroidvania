@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://xe46crxr5t1y"]
+
+[ext_resource type="Script" uid="uid://c3i244b3702ss" path="res://metroidvania_project/00_global/player_hud/player_hud.gd" id="1_iqyyn"]
+[ext_resource type="Texture2D" uid="uid://cho2dwrufe0f4" path="res://metroidvania_project/00_global/player_hud/health_bar_frame.png" id="1_oq0at"]
+[ext_resource type="Resource" uid="uid://ddy2lu7atn2hp" path="res://metroidvania_project/00_global/visual effects/hit_particle_settings/Hit_Wood_Medium.tres" id="3_8qeeq"]
+
+[sub_resource type="Gradient" id="Gradient_8qeeq"]
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rxixl"]
+gradient = SubResource("Gradient_8qeeq")
+height = 16
+
+[sub_resource type="Gradient" id="Gradient_r7lid"]
+colors = PackedColorArray(0.8627451, 0.34117648, 0.34117648, 1, 0.9019608, 0.49803922, 0.49803922, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2fwhn"]
+gradient = SubResource("Gradient_r7lid")
+height = 16
+
+[sub_resource type="GDScript" id="GDScript_iqyyn"]
+script/source = "extends Button
+
+@export var particle_settings : HitParticleSettings
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pressed.connect(_on_pressed)
+	pass # Replace with function body.
+
+func _on_pressed() -> void:
+	var pos : Vector2 = get_tree().get_first_node_in_group(\"Player\").global_position
+	VisualEffects._hit_particles(pos, Vector2(1,0), particle_settings)
+	pass
+"
+
+[node name="PlayerHud" type="CanvasLayer" unique_id=357244610]
+process_mode = 3
+layer = 2
+script = ExtResource("1_iqyyn")
+
+[node name="Control" type="Control" parent="." unique_id=97507282]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 480.0
+offset_bottom = 270.0
+mouse_filter = 2
+
+[node name="HPMarginContainer" type="MarginContainer" parent="Control" unique_id=18187226]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 20.0
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/HPMarginContainer" unique_id=240058155]
+layout_mode = 2
+texture = ExtResource("1_oq0at")
+region_rect = Rect2(0, 0, 40, 20)
+patch_margin_left = 27
+patch_margin_right = 7
+axis_stretch_horizontal = 1
+
+[node name="HPBar" type="TextureProgressBar" parent="Control/HPMarginContainer/NinePatchRect" unique_id=1240265498]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 19.0
+offset_top = 5.0
+offset_right = -2.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 50.0
+rounded = true
+nine_patch_stretch = true
+texture_under = SubResource("GradientTexture2D_rxixl")
+texture_progress = SubResource("GradientTexture2D_2fwhn")
+
+[node name="Button2" type="Button" parent="Control" unique_id=613040461]
+layout_mode = 0
+offset_left = 367.0
+offset_top = 28.0
+offset_right = 475.0
+offset_bottom = 51.0
+text = "Test Particles"
+script = SubResource("GDScript_iqyyn")
+particle_settings = ExtResource("3_8qeeq")
+
+[node name="Button" type="Button" parent="Control" unique_id=184627753]
+layout_mode = 0
+offset_left = 367.0
+offset_right = 475.0
+offset_bottom = 23.0
+text = "Test Dust"
+script = SubResource("GDScript_iqyyn")
