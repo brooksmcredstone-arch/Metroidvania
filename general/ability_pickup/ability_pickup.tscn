@@ -1,0 +1,331 @@
+[gd_scene format=3 uid="uid://caxh0ki0etxo8"]
+
+[ext_resource type="Texture2D" uid="uid://cv1b48qcrorhx" path="res://metroidvania_project/player/sprites/abilities.png" id="1_bnt8e"]
+[ext_resource type="Script" uid="uid://p86t66f3vet0" path="res://metroidvania_project/general/scripts/breakable.gd" id="2_hdvnl"]
+[ext_resource type="Script" uid="uid://bb1visiehsweq" path="res://metroidvania_project/00_global/visual effects/hit_particle_settings.gd" id="3_apgk0"]
+[ext_resource type="AudioStream" uid="uid://djo06lytl1w4l" path="res://metroidvania_project/general/audio/ability_crack.wav" id="4_wnnpn"]
+[ext_resource type="AudioStream" uid="uid://lf61onfylkeu" path="res://metroidvania_project/general/audio/ability_acquire.wav" id="5_x5c8l"]
+[ext_resource type="Script" uid="uid://bs41c0tkwh7pl" path="res://metroidvania_project/general/scripts/damage_area.gd" id="6_4pil7"]
+
+[sub_resource type="GDScript" id="GDScript_hdvnl"]
+resource_name = "ability_pickup"
+script/source = "@tool
+@icon(\"res://metroidvania_project/general/icons/ability_pickup.svg\")
+class_name AbilityPickup extends Node2D
+
+enum Type {DOUBLE_JUMP, DASH, GROUND_SLAM}
+@export var type : Type = Type.DOUBLE_JUMP:
+	set(value):
+		type = value
+		_set_animation()
+
+@onready var ability_anim: AnimationPlayer = %AbilityAnim
+@onready var orb_anim: AnimationPlayer = %OrbAnim
+@onready var breakable: Breakable = $Breakable
+@onready var orb_sprite: Sprite2D = %OrbSprite
+
+func _ready() -> void:
+	_set_animation()
+	
+	if Engine.is_editor_hint():
+		return
+	
+	if SaveManager.persistent_data.get_or_add(ability_name(), \"\") == \"acquired\":
+		queue_free()
+		return
+	
+	breakable.destroyed.connect(_on_destroyed)
+	breakable.damage_taken.connect(_on_damage_taken)
+	
+	pass
+
+func _on_destroyed() -> void:
+	SaveManager.persistent_data[ability_name()] = \"acquired\"
+	reward_ability()
+	orb_anim.play(\"destroy\")
+	await orb_anim.animation_finished
+	queue_free()
+	pass
+
+func reward_ability() -> void:
+	var player : Player = get_tree().get_first_node_in_group(\"Player\")
+	
+	match type:
+		Type.DOUBLE_JUMP:
+			player.double_jump = true
+		Type.DASH:
+			player.dash = true
+		Type.GROUND_SLAM:
+			player.ground_slam = true
+	pass
+
+func _on_damage_taken() -> void:
+	orb_sprite.frame += 1
+	pass
+
+func _set_animation() -> void:
+	if not ability_anim:
+		ability_anim = %AbilityAnim
+	ability_anim.play(ability_name())
+	pass
+
+func ability_name() -> String:
+	match type:
+		Type.DOUBLE_JUMP:
+			return \"double_jump\"
+		Type.GROUND_SLAM:
+			return \"ground_slam\"
+		Type.DASH:
+			return \"dash\"
+	return \"\"
+"
+
+[sub_resource type="Animation" id="Animation_apgk0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AbilitySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_hdvnl"]
+resource_name = "dash"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AbilitySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="Animation" id="Animation_wnnpn"]
+resource_name = "double_jump"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AbilitySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [5, 6, 7, 8, 9]
+}
+
+[sub_resource type="Animation" id="Animation_x5c8l"]
+resource_name = "ground_slam"
+length = 0.5
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AbilitySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 14]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_apgk0"]
+_data = {
+&"RESET": SubResource("Animation_apgk0"),
+&"dash": SubResource("Animation_hdvnl"),
+&"double_jump": SubResource("Animation_wnnpn"),
+&"ground_slam": SubResource("Animation_x5c8l")
+}
+
+[sub_resource type="Animation" id="Animation_4pil7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OrbSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [20]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OrbSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AbilitySprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ghc7m"]
+resource_name = "default"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OrbSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [20]
+}
+
+[sub_resource type="Animation" id="Animation_5pv4o"]
+resource_name = "destroy"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("OrbSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [23, 24]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OrbSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AbilitySprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fqmn2"]
+_data = {
+&"RESET": SubResource("Animation_4pil7"),
+&"default": SubResource("Animation_ghc7m"),
+&"destroy": SubResource("Animation_5pv4o")
+}
+
+[sub_resource type="Resource" id="Resource_ghc7m"]
+script = ExtResource("3_apgk0")
+metadata/_custom_type_script = "uid://bb1visiehsweq"
+
+[sub_resource type="Resource" id="Resource_5pv4o"]
+script = ExtResource("3_apgk0")
+color = Color(0, 1, 0.7058824, 1)
+count = 3
+metadata/_custom_type_script = "uid://bb1visiehsweq"
+
+[sub_resource type="Resource" id="Resource_fqmn2"]
+script = ExtResource("3_apgk0")
+count = 10
+metadata/_custom_type_script = "uid://bb1visiehsweq"
+
+[sub_resource type="Resource" id="Resource_kank7"]
+script = ExtResource("3_apgk0")
+color = Color(0, 1, 0.7058824, 1)
+count = 6
+metadata/_custom_type_script = "uid://bb1visiehsweq"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t2fq8"]
+radius = 20.0
+
+[node name="AbilityPickup" type="Node2D" unique_id=369133119]
+script = SubResource("GDScript_hdvnl")
+
+[node name="AbilitySprite" type="Sprite2D" parent="." unique_id=971558884]
+unique_name_in_owner = true
+texture = ExtResource("1_bnt8e")
+hframes = 5
+vframes = 5
+
+[node name="AbilityAnim" type="AnimationPlayer" parent="AbilitySprite" unique_id=826753006]
+unique_name_in_owner = true
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_apgk0")
+autoplay = &"dash"
+
+[node name="OrbSprite" type="Sprite2D" parent="." unique_id=257755487]
+unique_name_in_owner = true
+texture = ExtResource("1_bnt8e")
+hframes = 5
+vframes = 5
+frame = 20
+
+[node name="OrbAnim" type="AnimationPlayer" parent="OrbSprite" unique_id=42232381]
+unique_name_in_owner = true
+root_node = NodePath("../..")
+libraries/ = SubResource("AnimationLibrary_fqmn2")
+autoplay = &"default"
+
+[node name="Breakable" type="Node2D" parent="." unique_id=874960482]
+script = ExtResource("2_hdvnl")
+fixed_hit_count = true
+hit_particles = Array[ExtResource("3_apgk0")]([SubResource("Resource_ghc7m"), SubResource("Resource_5pv4o")])
+destroy_particles = Array[ExtResource("3_apgk0")]([SubResource("Resource_fqmn2"), SubResource("Resource_kank7")])
+hit_audio = ExtResource("4_wnnpn")
+destroy_audio = ExtResource("5_x5c8l")
+metadata/_custom_type_script = "uid://p86t66f3vet0"
+
+[node name="DamageArea" type="Area2D" parent="Breakable" unique_id=908748304]
+collision_layer = 64
+collision_mask = 0
+script = ExtResource("6_4pil7")
+metadata/_custom_type_script = "uid://bs41c0tkwh7pl"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Breakable/DamageArea" unique_id=797745605]
+visible = false
+shape = SubResource("CircleShape2D_t2fq8")
