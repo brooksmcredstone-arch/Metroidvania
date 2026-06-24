@@ -1,15 +1,23 @@
 class_name Player extends CharacterBody2D
 
-
+signal damage_taken
 
 
 #region On Ready Variables
-@onready var sprite = $Sprite2D
-@onready var collision_stand = $CollisionStand
-@onready var collision_crouch = $CollisionCrouch
-@onready var animation_player = $AnimationPlayer
-@onready var one_way_platform_shape_cast = $OneWayPlatformShapeCast
+@onready var sprite: PlayerSprite = $Sprite2D
+@onready var attack_sprite: Sprite2D = %AttackSprite
+@onready var collision_stand: CollisionShape2D = $CollisionStand
+@onready var collision_crouch: CollisionShape2D = $CollisionCrouch
+@onready var da_stand: CollisionShape2D = %DAStand
+@onready var da_crouch: CollisionShape2D = %DACrouch
+@onready var one_way_platform_shape_cast: ShapeCast2D = $OneWayPlatformShapeCast
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var attack_area: AttackArea = %AttackArea
+@onready var damage_area: DamageArea = $DamageArea
+
+
+
+
  
 #endregion
 
@@ -32,7 +40,7 @@ var hp : float = 20:
 	set(value):
 		hp = clampf(value, 0, max_hp)
 		Messages.player_health_changed.emit(hp, max_hp)
-var max_hp : float = 20:
+var max_hp : float = 50:
 	set(value):
 		max_hp = value
 		Messages.player_health_changed.emit(hp, max_hp)
@@ -40,11 +48,15 @@ var max_hp : float = 20:
 var mp : float = 20
 var max_mp : float = 20
 var lvl : float = 1
+var def : float = 1
+var mdef : float = 1
 var experience: float = 0
 var dash : bool = false
+var dash_count : int = 0
 var double_jump : bool = false
-var ground_pound : bool = false
-var floatation : bool = false
+var jump_count : int = 0
+var ground_slam : bool = false
+var glide: bool = false
 #endregion
 
 #region Standard Variables
@@ -61,10 +73,14 @@ func _ready() -> void:
 	self.call_deferred("reparent", get_tree().root)
 	Messages.player_healed.connect(_on_player_healed)
 	Messages.back_to_title_screen.connect(queue_free)
+	damage_area.damage_taken.connect(_on_damage_taken)
+	hp = max_hp
 	pass
 
 func _unhandled_input(event : InputEvent) -> void:
 	#enables actions
+	if event.is_action_released("jump") and velocity.y < 0:
+		velocity.y *= 0.5
 	if event.is_action_pressed("action"):
 		Messages.player_interacted.emit(self)
 		#pauses the game
@@ -77,9 +93,6 @@ func _unhandled_input(event : InputEvent) -> void:
 	pass
 	
 	if OS.is_debug_build():
-		if event.is_action_pressed("attack"):
-			$AttackArea.activate()
-			return
 		if event is InputEventKey and event.pressed:
 			if event.keycode == KEY_MINUS:
 				if  Input.is_key_pressed(KEY_SHIFT):
@@ -154,12 +167,27 @@ func update_direction() -> void:
 		attack_area.flip(direction.x)
 		if direction.x < 0:
 			sprite.flip_h = true
+			attack_sprite.flip_h = true
+			attack_sprite.position.x = -24
+			
 		elif direction.x > 0:
 			sprite.flip_h = false
+			attack_sprite.flip_h = false
+			attack_sprite.position.x = 24
 	pass
 
 func _on_player_healed(amount : float) -> void:
 	hp += amount
-	print("Player healed: ", amount)
-	#audio-visual
 	pass
+
+func _on_damage_taken(player_attack_area : AttackArea) -> void:
+	if current_state == PlayerStateDeath:
+		return
+	hp -= player_attack_area.damage
+	damage_taken.emit()
+	pass
+
+func can_dash() -> bool:
+	if dash == false or dash_count > 0:
+		return false
+	return true
