@@ -21,12 +21,11 @@ func decide() -> EnemyState:
 			return es_death
 		else:
 			return es_hurt
-	if current_state is  ESDeath or not blackboard.can_decide:
+	if current_state is ESDeath or not blackboard.can_decide:
 		return null
 		
 	if blackboard.target:
 		if attack_state.can_attack():
-			print("attack")
 			return attack_state
 		return chase_state
 	return es_walk

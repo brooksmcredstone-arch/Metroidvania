@@ -5,12 +5,15 @@ class_name ESChase extends EnemyState
 func enter() -> void:
 	enemy.play_animation(animation_name if animation_name else "walk")
 	pass
+
 func re_enter() -> void:
 	# what happens when we re-enter the state?
 	pass
+
 func exit() -> void:
 	# what happens when we exit this state?
 	pass
+
 func physics_update(_delta : float) -> void:
 	var dir : float = sign(blackboard.target.global_position.x - enemy.global_position.x)
 	enemy.change_dir(dir)

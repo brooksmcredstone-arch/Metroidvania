@@ -184,6 +184,10 @@ _data = {
 &"walk": SubResource("Animation_aa8e0")
 }
 
+[sub_resource type="Curve" id="Curve_l7oru"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5159575, 0.033707857), 0.0, 0.0, 0, 0, Vector2(0.5531915, 1), 2.8029385, 2.8029385, 0, 0, Vector2(0.84042555, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 5
+
 [sub_resource type="Gradient" id="Gradient_oma5g"]
 offsets = PackedFloat32Array(0.5, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -332,10 +336,11 @@ metadata/_custom_type_script = "uid://bw8en7ewi1l0b"
 unique_name_in_owner = true
 script = ExtResource("12_3srso")
 attack_area = NodePath("../../AttackArea")
-move_speed = 0.0
+move_speed_curve = SubResource("Curve_l7oru")
 metadata/_custom_type_script = "uid://do220w2kra3pf"
 
 [node name="ESChase" type="Node" parent="EnemyStateMachine" unique_id=1802798704]
+unique_name_in_owner = true
 script = ExtResource("13_l7oru")
 metadata/_custom_type_script = "uid://xlux74g70ehk"
 
