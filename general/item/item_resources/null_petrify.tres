@@ -12,4 +12,5 @@ script = ExtResource("1_7enu0")
 name = "Null_Petrify"
 description = "Cures Gradual Petrification"
 texture = SubResource("AtlasTexture_m3s6b")
+effect_type = 3
 metadata/_custom_type_script = "uid://dy6bdhyteu4tg"
