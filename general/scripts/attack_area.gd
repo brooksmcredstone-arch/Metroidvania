@@ -1,7 +1,12 @@
 @icon("res://metroidvania_project/general/icons/attack_area.svg")
 class_name AttackArea extends Area2D
 
-@export var damage : float = 10
+enum DamageType {PHYSICAL, MAGICAL}
+
+@export var damage : float = 1.0
+@export var damage_type : DamageType = DamageType.PHYSICAL
+
+var atk : float = 0.0
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
@@ -18,8 +23,7 @@ func _on_body_entered(body : Node2D) -> void:
 		body.take_damage(self)
 		var pos : Vector2 = global_position
 		pos.x = body.global_position.x
-		pos.y = body.global_position.y
-		VisualEffects._hit_dust(pos)
+		VisualEffects.hit_dust(pos)
 		pass
 	pass
 
