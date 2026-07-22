@@ -103,8 +103,7 @@ func play_spatial_sound(audio : AudioStream, pos : Vector2, ignore_pool : bool =
 		ap.finished.connect(ap.queue_free)
 		ap.play()
 	else:
-		var ap :AudioStreamPlayer2D = audio_pool[audio_index]
-		ap.bus = "SFX"
+		var ap : AudioStreamPlayer2D = audio_pool[audio_index]
 		ap.global_position = pos
 		ap.stream = audio
 		ap.play()

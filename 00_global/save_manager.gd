@@ -44,6 +44,13 @@ func create_new_game_save(slot : int) -> void:
 		"max_hp" : 20,
 		"mp" : 20,
 		"max_mp" : 20,
+		"lvl" : 1,
+		"atk" : 1,
+		"mag" : 1,
+		"def" : 0,
+		"mdef" : 0,
+		"experience" : 0,
+		"gold" : 00,
 		"dash" : false,
 		"double_jump" : false,
 		"ground_pound" : false,
@@ -73,11 +80,16 @@ func save_game() -> void:
 		"mp" : player.mp,
 		"max_mp" : player.max_mp,
 		"lvl" : player.lvl,
+		"atk" : player.atk,
+		"mag" : player.mag,
+		"def" : player.def,
+		"mdef" : player.mdef,
 		"experience" : player.experience,
+		"gold" : player.gold,
 		"dash" : player.dash,
 		"double_jump" : player.double_jump,
-		"ground_pound" : player.ground_pound,
-		"floatation" : player.floatation,
+		"ground_slam" : player.ground_slam,
+		"glide" : player.glide,
 		"discovered_areas" : discovered_areas,
 		"persistent_data" : persistent_data,
 	}
@@ -91,6 +103,7 @@ func load_game(slot : int) -> void:
 	if not FileAccess.file_exists(get_file_name(current_slot)):
 		return
 	current_slot = slot
+	
 	var save_file = FileAccess.open(get_file_name(current_slot), FileAccess.READ)
 	save_data = JSON.parse_string(save_file.get_line() )
 	
@@ -114,11 +127,14 @@ func setup_player() -> void:
 	player.mp = save_data.get("mp", 20)
 	player.lvl = save_data.get("lvl", 1)
 	player.experience = save_data.get("experience", 0)
-	
+	player.atk = save_data.get("atk", 1)
+	player.mag = save_data.get("mag",1)
+	player.def = save_data.get("def",1)
+	player.mdef = save_data.get("mdef",1)
 	player.dash = save_data.get("dash", false)
 	player.double_jump = save_data.get("double_jump", false)
-	player.ground_pound = save_data.get("ground_pound", false)
-	player.floatation = save_data.get("floatation", false)
+	player.ground_slam = save_data.get("ground_slam", false)
+	player.glide = save_data.get("glide", false)
 	
 	player.global_position = Vector2(
 		save_data.get("x", 0), 

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b27qvvh5ba3ej"]
+
+[ext_resource type="Environment" uid="uid://ylbw37huw6se" path="res://metroidvania_project/default_environment.tres" id="1_f8516"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" unique_id=1330301434]
+environment = ExtResource("1_f8516")

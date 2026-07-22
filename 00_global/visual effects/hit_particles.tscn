@@ -20,7 +20,7 @@ gravity = Vector3(0, 200, 0)
 alpha_curve = SubResource("CurveTexture_guc6e")
 
 [node name="HitParticles" type="GPUParticles2D" unique_id=1328982319]
-z_index = 3
+z_index = 2
 emitting = false
 one_shot = true
 explosiveness = 0.9

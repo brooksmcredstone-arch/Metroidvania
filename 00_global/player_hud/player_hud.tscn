@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://c3i244b3702ss" path="res://metroidvania_project/00_global/player_hud/player_hud.gd" id="1_iqyyn"]
 [ext_resource type="Texture2D" uid="uid://cho2dwrufe0f4" path="res://metroidvania_project/00_global/player_hud/health_bar_frame.png" id="1_oq0at"]
 [ext_resource type="Resource" uid="uid://ddy2lu7atn2hp" path="res://metroidvania_project/00_global/visual effects/hit_particle_settings/Hit_Wood_Medium.tres" id="3_8qeeq"]
+[ext_resource type="Texture2D" uid="uid://blajnu4ahnusv" path="res://metroidvania_project/general/coin/coin-Sheet.png" id="4_rxixl"]
 
 [sub_resource type="Gradient" id="Gradient_8qeeq"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
@@ -19,18 +20,21 @@ gradient = SubResource("Gradient_r7lid")
 height = 16
 
 [sub_resource type="GDScript" id="GDScript_iqyyn"]
+resource_name = "Hit_Particles"
 script/source = "extends Button
 
 @export var particle_settings : HitParticleSettings
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pressed.connect(_on_pressed)
+	pressed.connect(on_pressed)
 	pass # Replace with function body.
 
-func _on_pressed() -> void:
-	var pos : Vector2 = get_tree().get_first_node_in_group(\"Player\").global_position
-	VisualEffects._hit_particles(pos, Vector2(1,0), particle_settings)
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func on_pressed() -> void:
+	#var pos : Vector2 = get_tree().get_first_node_in_group(\"Player\").global_position
+	#VisualEffects.hit_particles(pos, Vector2(1,0),particle_settings)
+	PlayerHud.show_game_over()
 	pass
 "
 
@@ -50,7 +54,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 20)
 layout_mode = 0
-offset_right = 40.0
+offset_right = 42.0
 offset_bottom = 20.0
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Control/HPMarginContainer" unique_id=240058155]
@@ -80,20 +84,97 @@ nine_patch_stretch = true
 texture_under = SubResource("GradientTexture2D_rxixl")
 texture_progress = SubResource("GradientTexture2D_2fwhn")
 
-[node name="Button2" type="Button" parent="Control" unique_id=613040461]
+[node name="Button" type="Button" parent="Control" unique_id=1664282625]
+visible = false
 layout_mode = 0
-offset_left = 367.0
-offset_top = 28.0
-offset_right = 475.0
-offset_bottom = 51.0
-text = "Test Particles"
+offset_left = 355.0
+offset_top = 6.0
+offset_right = 476.0
+offset_bottom = 29.0
+text = "Test Game Over"
 script = SubResource("GDScript_iqyyn")
 particle_settings = ExtResource("3_8qeeq")
 
-[node name="Button" type="Button" parent="Control" unique_id=184627753]
+[node name="GameOver" type="Control" parent="Control" unique_id=226254548]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control/GameOver" unique_id=1928982565]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Control/GameOver" unique_id=878703070]
+modulate = Color(1, 0, 0, 1)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = -17.0
+offset_right = 36.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/GameOver" unique_id=335273576]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -155.0
+offset_top = 15.0
+offset_right = 149.0
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LoadButton" type="Button" parent="Control/GameOver/HBoxContainer" unique_id=136598943]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Load Last Save"
+
+[node name="QuitButton" type="Button" parent="Control/GameOver/HBoxContainer" unique_id=525052972]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Return  to  Title"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control" unique_id=116005053]
 layout_mode = 0
-offset_left = 367.0
+offset_left = 420.0
+offset_top = 230.0
 offset_right = 475.0
-offset_bottom = 23.0
-text = "Test Dust"
-script = SubResource("GDScript_iqyyn")
+offset_bottom = 270.0
+
+[node name="Control" type="Control" parent="Control/HBoxContainer" unique_id=2036833672]
+custom_minimum_size = Vector2(6, 6)
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Control/HBoxContainer/Control" unique_id=1073601229]
+position = Vector2(0, 19)
+texture = ExtResource("4_rxixl")
+hframes = 4
+
+[node name="GoldAmountLabel" type="Label" parent="Control/HBoxContainer" unique_id=1144118706]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(45, 0)
+layout_mode = 2
+text = "00"
