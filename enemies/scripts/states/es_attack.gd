@@ -9,7 +9,8 @@ class_name ESAttack extends EnemyState
 var timer : float = 0
 var duration : float = 0
 var on_cooldown : bool = false
-
+var dir : Vector2
+var sample : float = 1.0
 
 
 func enter() -> void:
@@ -20,12 +21,22 @@ func enter() -> void:
 	on_cooldown = true
 	enemy.velocity.x = move_speed * blackboard.dir
 	if attack_area:
+		attack_area.atk = enemy.get_attack_power(attack_area.damage_type)
 		attack_area.flip(blackboard.dir)
 	pass
 
 
 func re_enter() -> void:
-	# what happens when we re-enter the state?
+	on_cooldown = false
+	enemy.play_animation(animation_name if animation_name else "attack")
+	duration = enemy.animation.current_animation_length
+	timer = 0
+	blackboard.can_decide = false
+	on_cooldown = true
+	enemy.velocity.x = move_speed * blackboard.dir
+	if attack_area:
+		attack_area.atk = enemy.get_attack_power(attack_area.damage_type)
+		attack_area.flip(blackboard.dir)
 	pass
 
 
@@ -41,7 +52,12 @@ func physics_update(delta : float) -> void:
 	if timer >= duration:
 		blackboard.can_decide = true
 	if move_speed_curve:
-		var sample : float = move_speed_curve.sample(timer/duration)
+		sample  = move_speed_curve.sample(timer/duration)
+	if blackboard.target == null:
+		return
+	elif blackboard.target != null:
+		dir = enemy.global_position.direction_to(blackboard.target.global_position)
+		enemy.change_dir(sign(dir.x))
 		enemy.velocity.x = move_speed * sample * blackboard.dir
 	pass
 

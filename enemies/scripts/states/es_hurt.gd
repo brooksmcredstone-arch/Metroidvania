@@ -23,7 +23,7 @@ func enter() -> void:
 	pass
 
 func re_enter() -> void:
-	# what happens when we re-enter the state?
+	start()
 	pass
 
 func exit() -> void:

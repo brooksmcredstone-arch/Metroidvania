@@ -7,6 +7,10 @@ signal was_hit(a : AttackArea)
 signal was_killed()
 
 @export var health : float = 3
+@export var atk : float = 3
+@export var def : float = 0
+@export var matk : float = 0
+@export var mdef : float = 0
 @export var affected_by_gravity : bool = true
 @export var face_left_on_start : bool  = false
 
@@ -16,7 +20,6 @@ var sprite : Sprite2D
 var animation : AnimationPlayer
 var damage_area : DamageArea
 var hazard_area : HazardArea
-
 var state_machine : EnemyStateMachine
 var decision_engine : DecisionEngine
 var blackboard : Blackboard
@@ -28,7 +31,6 @@ func _ready() -> void:
 		set_physics_process(false)
 		return
 	setup()
-	
 	pass
 
 func setup() -> void:
@@ -93,11 +95,15 @@ func play_animation(anim_name : String) -> void:
 		printerr("Animation Missing: ", anim_name)
 	pass
 
+func get_attack_power(damage_type : AttackArea.DamageType) -> float:
+	
+	return matk if damage_type == AttackArea.DamageType.MAGICAL else atk
 
 
 func on_damage_taken(a : AttackArea) -> void:
-	blackboard.damage_source = a  
-	blackboard.health -= a.damage
+	blackboard.damage_source = a
+	var incoming_def : float = mdef if a.damage_type == AttackArea.DamageType.MAGICAL else def
+	blackboard.health -= CombatDamage.calculate_damage(a.damage, a.atk, incoming_def)
 	if blackboard.health <= 0:
 		damage_area.queue_free()
 		hazard_area.queue_free()

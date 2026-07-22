@@ -8,7 +8,7 @@ signal started_searching
 @export var detection_duration : float = 2
 
 var enemy : Enemy
-var timer : float = 0
+var timer : float
 
 
 
@@ -35,6 +35,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_body_entered(n : Node2D) -> void:
+	timer = 0
 	player_entered.emit()
 	enemy.blackboard.target = n
 	pass
@@ -43,7 +44,7 @@ func _on_body_entered(n : Node2D) -> void:
 func _on_body_exited(_n : Node2D) -> void:
 	started_searching.emit()
 	timer = detection_duration
-
+	player_exited.emit()
 	pass
 
 

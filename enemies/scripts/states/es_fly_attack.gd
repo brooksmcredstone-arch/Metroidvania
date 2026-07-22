@@ -20,12 +20,20 @@ func enter() -> void:
 	blackboard.can_decide = false
 	on_cooldown = true
 	if attack_area:
+		attack_area.atk = enemy.get_attack_power(attack_area.damage_type)
 		attack_area.flip(blackboard.dir)
 	pass
 
 
 func re_enter() -> void:
-	# what happens when we re-enter the state?
+	enemy.play_animation(animation_name if animation_name else "attack")
+	duration = enemy.animation.current_animation_length
+	timer = 0
+	blackboard.can_decide = false
+	on_cooldown = true
+	if attack_area:
+		attack_area.atk = enemy.get_attack_power(attack_area.damage_type)
+		attack_area.flip(blackboard.dir)
 	pass
 
 
@@ -41,10 +49,13 @@ func physics_update(delta : float) -> void:
 		blackboard.can_decide = true
 	if speed_curve:
 		speed_sample = speed_curve.sample(timer/duration)
-	dir = enemy.global_position.direction_to(blackboard.target.global_position)
-	enemy.change_dir(sign(dir.x))
-	enemy.velocity = dir * move_speed * speed_sample
-		
+	if blackboard.target == null:
+		return
+	elif blackboard.target != null:
+		dir = enemy.global_position.direction_to(blackboard.target.global_position)
+		enemy.change_dir(sign(dir.x))
+		enemy.velocity = dir * move_speed * speed_sample
+	
 	pass
 
 

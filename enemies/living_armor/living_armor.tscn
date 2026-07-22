@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://c8l0gkpy5hoxl" path="res://metroidvania_project/general/scripts/loot_dropper.gd" id="15_gimas"]
 [ext_resource type="Script" uid="uid://p5e7h3m3dvs" path="res://metroidvania_project/general/scripts/loot_data.gd" id="16_ebnhy"]
 [ext_resource type="Script" uid="uid://cjba4n1r3121v" path="res://metroidvania_project/general/scripts/attack_area.gd" id="19_6i6ij"]
+[ext_resource type="Script" uid="uid://b4d7wmpw2iyvx" path="res://metroidvania_project/general/scripts/damage_modulate.gd" id="21_aofwf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aj4k2"]
 radius = 9.0
@@ -185,7 +186,7 @@ _data = {
 }
 
 [sub_resource type="Curve" id="Curve_l7oru"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5159575, 0.033707857), 0.0, 0.0, 0, 0, Vector2(0.5531915, 1), 2.8029385, 2.8029385, 0, 0, Vector2(0.84042555, 0), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5159575, 0.033707857), 0.0, 0.0, 0, 0, Vector2(0.5531915, 1), 2.8029385, 2.8029385, 0, 0, Vector2(0.82978725, 0.04494381), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 5
 
 [sub_resource type="Gradient" id="Gradient_oma5g"]
@@ -251,10 +252,19 @@ item = "uid://rbb0ukxi1688"
 maximum = 5
 metadata/_custom_type_script = "uid://p5e7h3m3dvs"
 
+[sub_resource type="Resource" id="Resource_aofwf"]
+script = ExtResource("16_ebnhy")
+item = "uid://cvdynue875wjt"
+maximum = 5
+drop_chance = 1.0
+metadata/_custom_type_script = "uid://p5e7h3m3dvs"
+
 [node name="LivingArmor" type="CharacterBody2D" unique_id=1093460218]
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_y8x4q")
+health = 20.0
+def = 5.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=145209753]
 position = Vector2(1, -31)
@@ -273,7 +283,7 @@ visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("3_ahmin")
-damage = 20.0
+damage = 5.0
 metadata/_custom_type_script = "uid://c8fha3hgcaw2d"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HazardArea" unique_id=87968464]
@@ -299,6 +309,7 @@ visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("19_6i6ij")
+damage = 10.0
 metadata/_custom_type_script = "uid://cjba4n1r3121v"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=988743643]
@@ -319,12 +330,20 @@ unique_name_in_owner = true
 script = ExtResource("6_uypmv")
 metadata/_custom_type_script = "uid://bt0txeqhfvwl3"
 
-[node name="ESDeath" type="Node" parent="EnemyStateMachine" unique_id=989208886]
+[node name="ESChase" type="Node" parent="EnemyStateMachine" unique_id=1802798704]
 unique_name_in_owner = true
-script = ExtResource("7_8lwu7")
-knockback_strength = 10.0
-death_audio = ExtResource("8_d5t0r")
-metadata/_custom_type_script = "uid://cf5xqfrcq85ho"
+script = ExtResource("13_l7oru")
+metadata/_custom_type_script = "uid://xlux74g70ehk"
+
+[node name="ESAttack" type="Node" parent="EnemyStateMachine" unique_id=1821535331 node_paths=PackedStringArray("attack_area")]
+unique_name_in_owner = true
+script = ExtResource("12_3srso")
+attack_area = NodePath("../../AttackArea")
+attack_range = 30.0
+move_speed = 200.0
+cooldown = 1.0
+move_speed_curve = SubResource("Curve_l7oru")
+metadata/_custom_type_script = "uid://do220w2kra3pf"
 
 [node name="ESHurt" type="Node" parent="EnemyStateMachine" unique_id=304717378]
 unique_name_in_owner = true
@@ -332,17 +351,12 @@ script = ExtResource("9_axnvj")
 knockback_strength = 25.0
 metadata/_custom_type_script = "uid://bw8en7ewi1l0b"
 
-[node name="ESAttack" type="Node" parent="EnemyStateMachine" unique_id=1821535331 node_paths=PackedStringArray("attack_area")]
+[node name="ESDeath" type="Node" parent="EnemyStateMachine" unique_id=989208886]
 unique_name_in_owner = true
-script = ExtResource("12_3srso")
-attack_area = NodePath("../../AttackArea")
-move_speed_curve = SubResource("Curve_l7oru")
-metadata/_custom_type_script = "uid://do220w2kra3pf"
-
-[node name="ESChase" type="Node" parent="EnemyStateMachine" unique_id=1802798704]
-unique_name_in_owner = true
-script = ExtResource("13_l7oru")
-metadata/_custom_type_script = "uid://xlux74g70ehk"
+script = ExtResource("7_8lwu7")
+knockback_strength = 0.0
+death_audio = ExtResource("8_d5t0r")
+metadata/_custom_type_script = "uid://cf5xqfrcq85ho"
 
 [node name="EdgeDetector" type="RayCast2D" parent="." unique_id=1644326128]
 position = Vector2(7, -3)
@@ -351,13 +365,12 @@ script = ExtResource("11_fbuls")
 metadata/_custom_type_script = "uid://bu4k5o0i6u218"
 
 [node name="PlayerSensor" type="Area2D" parent="." unique_id=1866834851]
-visible = false
 position = Vector2(-2, -28)
 script = ExtResource("12_7r7im")
 metadata/_custom_type_script = "uid://buhn16p6hktml"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerSensor" unique_id=1671517827]
-position = Vector2(0, -7)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerSensor" unique_id=849340360]
+position = Vector2(1, -8)
 polygon = PackedVector2Array(0, 0, 256, -128, 256, 128)
 
 [node name="EnemyHitParticles" type="Marker2D" parent="." unique_id=1992711669]
@@ -370,7 +383,7 @@ metadata/_custom_type_script = "uid://bkuce0ae65hqs"
 [node name="LootDropper" type="Marker2D" parent="." unique_id=415773992]
 position = Vector2(0, -15)
 script = ExtResource("15_gimas")
-items = Array[ExtResource("16_ebnhy")]([SubResource("Resource_6paje")])
+items = Array[ExtResource("16_ebnhy")]([SubResource("Resource_6paje"), SubResource("Resource_aofwf")])
 metadata/_custom_type_script = "uid://c8l0gkpy5hoxl"
 
 [node name="DecisionEngineBasicAttack" type="Node" parent="." unique_id=1551722991 node_paths=PackedStringArray("attack_state", "chase_state")]
@@ -378,3 +391,7 @@ script = ExtResource("6_4h3gi")
 attack_state = NodePath("../EnemyStateMachine/ESAttack")
 chase_state = NodePath("../EnemyStateMachine/ESChase")
 metadata/_custom_type_script = "uid://bu4sex68gbpmo"
+
+[node name="DamageModulate" type="Node2D" parent="." unique_id=42298506]
+script = ExtResource("21_aofwf")
+metadata/_custom_type_script = "uid://b4d7wmpw2iyvx"

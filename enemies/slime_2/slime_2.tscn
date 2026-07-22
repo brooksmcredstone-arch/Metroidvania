@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bb1visiehsweq" path="res://metroidvania_project/00_global/visual effects/hit_particle_settings.gd" id="14_oma5g"]
 [ext_resource type="Script" uid="uid://c8l0gkpy5hoxl" path="res://metroidvania_project/general/scripts/loot_dropper.gd" id="15_04evx"]
 [ext_resource type="Script" uid="uid://p5e7h3m3dvs" path="res://metroidvania_project/general/scripts/loot_data.gd" id="16_3pm5a"]
+[ext_resource type="Script" uid="uid://b4d7wmpw2iyvx" path="res://metroidvania_project/general/scripts/damage_modulate.gd" id="18_6paje"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aj4k2"]
 radius = 8.0
@@ -211,6 +212,7 @@ visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("3_jdxsc")
+damage = 10.0
 metadata/_custom_type_script = "uid://c8fha3hgcaw2d"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HazardArea" unique_id=87968464]
@@ -244,6 +246,7 @@ metadata/_custom_type_script = "uid://bt0txeqhfvwl3"
 [node name="ESDeath" type="Node" parent="EnemyStateMachine" unique_id=989208886]
 unique_name_in_owner = true
 script = ExtResource("8_qtinj")
+knockback_strength = 0.0
 death_audio = ExtResource("9_qtinj")
 metadata/_custom_type_script = "uid://cf5xqfrcq85ho"
 
@@ -284,3 +287,7 @@ position = Vector2(0, -15)
 script = ExtResource("15_04evx")
 items = Array[ExtResource("16_3pm5a")]([SubResource("Resource_6paje")])
 metadata/_custom_type_script = "uid://c8l0gkpy5hoxl"
+
+[node name="DamageModulate" type="Node2D" parent="." unique_id=542734547]
+script = ExtResource("18_6paje")
+metadata/_custom_type_script = "uid://b4d7wmpw2iyvx"

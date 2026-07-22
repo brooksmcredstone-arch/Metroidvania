@@ -14,6 +14,11 @@
 [ext_resource type="Script" uid="uid://cxsyxakl3yaxw" path="res://metroidvania_project/enemies/scripts/states/es_fly_attack.gd" id="9_e4s8v"]
 [ext_resource type="Script" uid="uid://cf5xqfrcq85ho" path="res://metroidvania_project/enemies/scripts/states/es_death.gd" id="10_5ne2a"]
 [ext_resource type="Script" uid="uid://bm6qxtcryqj6j" path="res://metroidvania_project/enemies/scripts/decision_engines/decision_engine_flying.gd" id="11_71s56"]
+[ext_resource type="Script" uid="uid://bkuce0ae65hqs" path="res://metroidvania_project/enemies/scripts/enemy_hit_particles.gd" id="13_5ne2a"]
+[ext_resource type="AudioStream" uid="uid://buociavx07uiv" path="res://metroidvania_project/enemies/slime/slime_death.wav" id="13_qbe73"]
+[ext_resource type="Script" uid="uid://b4d7wmpw2iyvx" path="res://metroidvania_project/general/scripts/damage_modulate.gd" id="17_wqqj0"]
+[ext_resource type="Script" uid="uid://c8l0gkpy5hoxl" path="res://metroidvania_project/general/scripts/loot_dropper.gd" id="18_b7vsr"]
+[ext_resource type="Script" uid="uid://p5e7h3m3dvs" path="res://metroidvania_project/general/scripts/loot_data.gd" id="19_bnwix"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qbe73"]
 size = Vector2(40, 33)
@@ -163,12 +168,30 @@ _data = {
 
 [sub_resource type="Curve" id="Curve_e4s8v"]
 _limits = [-0.25, 1.0, 0.0, 1.0]
-_data = [Vector2(0, -0.25), 0.0, -2.1123595, 0, 0, Vector2(0.31914896, 0.41011238), 3.7406373, 3.7406373, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, -0.25), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, -0.25), 0.0, -0.32426584, 0, 0, Vector2(0.3670213, 0.46629214), 5.9850173, 5.9850173, 0, 0, Vector2(0.5319149, 1), -4.400748, -4.400748, 0, 0, Vector2(1, 0.0028089285), 0.0, 0.0, 0, 0]
 point_count = 4
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5ne2a"]
+radius = 100.0
+
+[sub_resource type="Resource" id="Resource_sbp64"]
+script = ExtResource("19_bnwix")
+item = "uid://cvdynue875wjt"
+maximum = 4
+drop_chance = 1.0
+metadata/_custom_type_script = "uid://p5e7h3m3dvs"
+
+[sub_resource type="Resource" id="Resource_nmr4j"]
+script = ExtResource("19_bnwix")
+item = "uid://rbb0ukxi1688"
+maximum = 2
+metadata/_custom_type_script = "uid://p5e7h3m3dvs"
 
 [node name="DemonChest" type="CharacterBody2D" unique_id=2107961319]
 collision_layer = 0
 script = ExtResource("1_vcfkw")
+health = 100.0
+def = 6.0
 metadata/_custom_type_script = "uid://deudg1ry7q3vs"
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=446717920]
@@ -188,6 +211,7 @@ visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("3_pe86k")
+damage = 20.0
 metadata/_custom_type_script = "uid://c8fha3hgcaw2d"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HazardArea" unique_id=1715024235]
@@ -213,6 +237,7 @@ visible = false
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("5_71s56")
+damage = 20.0
 metadata/_custom_type_script = "uid://cjba4n1r3121v"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=852186495]
@@ -228,27 +253,43 @@ script = ExtResource("7_7onmu")
 metadata/_custom_type_script = "uid://bxl503rq78gf5"
 
 [node name="ESFly" type="Node" parent="EnemyStateMachine" unique_id=14755780]
+unique_name_in_owner = true
 script = ExtResource("7_71s56")
+speed = 25.0
 metadata/_custom_type_script = "uid://o0pj5nyo76sl"
 
 [node name="ESFlyChase" type="Node" parent="EnemyStateMachine" unique_id=1952909150]
+unique_name_in_owner = true
 script = ExtResource("8_e4s8v")
+chase_speed = 75.0
 animation_name = "alert"
 metadata/_custom_type_script = "uid://degk6s5iv2wcd"
 
 [node name="ESFlyAttack" type="Node" parent="EnemyStateMachine" unique_id=220076019 node_paths=PackedStringArray("attack_area")]
+unique_name_in_owner = true
 script = ExtResource("9_e4s8v")
 attack_area = NodePath("../../AttackArea")
+attack_range = 50.0
+move_speed = 300.0
+cooldown = 1.0
 speed_curve = SubResource("Curve_e4s8v")
 metadata/_custom_type_script = "uid://cxsyxakl3yaxw"
 
 [node name="ESHurt" type="Node" parent="EnemyStateMachine" unique_id=1257048458]
+unique_name_in_owner = true
 script = ExtResource("9_7onmu")
 metadata/_custom_type_script = "uid://bw8en7ewi1l0b"
 
 [node name="ESDeath" type="Node" parent="EnemyStateMachine" unique_id=423936963]
+unique_name_in_owner = true
 script = ExtResource("10_5ne2a")
+knockback_strength = 0.0
+death_audio = ExtResource("13_qbe73")
 metadata/_custom_type_script = "uid://cf5xqfrcq85ho"
+
+[node name="EnemyHitParticles" type="Marker2D" parent="." unique_id=1655867681]
+script = ExtResource("13_5ne2a")
+metadata/_custom_type_script = "uid://bkuce0ae65hqs"
 
 [node name="DecisionEngineFlying" type="Node" parent="." unique_id=2030306258 node_paths=PackedStringArray("idle_state", "fly_state", "chase_state", "attack_state", "death_state", "hurt_state")]
 script = ExtResource("11_71s56")
@@ -264,6 +305,16 @@ metadata/_custom_type_script = "uid://bm6qxtcryqj6j"
 script = ExtResource("8_5ne2a")
 metadata/_custom_type_script = "uid://buhn16p6hktml"
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerSensor" unique_id=2004483253]
-position = Vector2(0, -15)
-polygon = PackedVector2Array(0, 0, 256, 128, 256, -128)
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="PlayerSensor" unique_id=319713802]
+position = Vector2(82, -7)
+shape = SubResource("CircleShape2D_5ne2a")
+debug_color = Color(0.7019608, 0.5137255, 0, 0)
+
+[node name="DamageModulate" type="Node2D" parent="." unique_id=401202698]
+script = ExtResource("17_wqqj0")
+metadata/_custom_type_script = "uid://b4d7wmpw2iyvx"
+
+[node name="LootDropper" type="Marker2D" parent="." unique_id=648367766]
+script = ExtResource("18_b7vsr")
+items = Array[ExtResource("19_bnwix")]([SubResource("Resource_sbp64"), SubResource("Resource_nmr4j")])
+metadata/_custom_type_script = "uid://c8l0gkpy5hoxl"

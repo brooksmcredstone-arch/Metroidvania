@@ -1,0 +1,228 @@
+[gd_scene format=3 uid="uid://d1l13dkajq6h2"]
+
+[ext_resource type="Script" uid="uid://deudg1ry7q3vs" path="res://metroidvania_project/enemies/scripts/enemy.gd" id="1_800it"]
+[ext_resource type="Texture2D" uid="uid://b6w4hkrni0rln" path="res://metroidvania_project/enemies/Traps/turret/Turret.png" id="2_i5j3m"]
+[ext_resource type="Script" uid="uid://c8fha3hgcaw2d" path="res://metroidvania_project/general/scripts/hazard_area.gd" id="3_grl4e"]
+[ext_resource type="Script" uid="uid://bs41c0tkwh7pl" path="res://metroidvania_project/general/scripts/damage_area.gd" id="4_lpon8"]
+[ext_resource type="AudioStream" uid="uid://djqtlgo38gjr6" path="res://metroidvania_project/enemies/slime/slime_hit.wav" id="5_c6m1h"]
+[ext_resource type="Script" uid="uid://bxl503rq78gf5" path="res://metroidvania_project/enemies/scripts/enemy_state_machine.gd" id="6_pdhk0"]
+[ext_resource type="Script" uid="uid://bu4sex68gbpmo" path="res://metroidvania_project/enemies/scripts/decision_engines/decision_engine_basic_attack.gd" id="7_3s1m6"]
+[ext_resource type="Script" uid="uid://bt0txeqhfvwl3" path="res://metroidvania_project/enemies/scripts/states/es_walk.gd" id="7_daudc"]
+[ext_resource type="Script" uid="uid://bw8en7ewi1l0b" path="res://metroidvania_project/enemies/scripts/states/es_hurt.gd" id="8_e1qaq"]
+[ext_resource type="Script" uid="uid://cf5xqfrcq85ho" path="res://metroidvania_project/enemies/scripts/states/es_death.gd" id="9_uwhfc"]
+[ext_resource type="Script" uid="uid://do220w2kra3pf" path="res://metroidvania_project/enemies/scripts/states/es_attack.gd" id="10_4tnyc"]
+[ext_resource type="Script" uid="uid://buhn16p6hktml" path="res://metroidvania_project/enemies/scripts/sensors/player_sensor.gd" id="12_bimbk"]
+[ext_resource type="Script" uid="uid://dwxf0o3t1nrij" path="res://metroidvania_project/general/projectiles/projectile_spawner.gd" id="13_oskik"]
+[ext_resource type="PackedScene" uid="uid://c13r3acdt0nrq" path="res://metroidvania_project/general/projectiles/fireball/fireball.tscn" id="14_enyju"]
+[ext_resource type="Script" uid="uid://b4d7wmpw2iyvx" path="res://metroidvania_project/general/scripts/damage_modulate.gd" id="15_1rbb8"]
+
+[sub_resource type="Animation" id="Animation_pdhk0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3s1m6"]
+resource_name = "attack"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 1, 0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Projectile_Spawner")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"fire_at_player"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_daudc"]
+resource_name = "death"
+length = 0.001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ouahc"]
+resource_name = "idle"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yda2a"]
+_data = {
+&"RESET": SubResource("Animation_pdhk0"),
+&"attack": SubResource("Animation_3s1m6"),
+&"death": SubResource("Animation_daudc"),
+&"idle": SubResource("Animation_ouahc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ouahc"]
+size = Vector2(20, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yda2a"]
+size = Vector2(20, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_daudc"]
+size = Vector2(20, 40)
+
+[node name="Turret" type="CharacterBody2D" unique_id=334865584]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_800it")
+metadata/_custom_type_script = "uid://deudg1ry7q3vs"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=361463009]
+position = Vector2(0, -26)
+texture = ExtResource("2_i5j3m")
+hframes = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1777641948]
+libraries/ = SubResource("AnimationLibrary_yda2a")
+autoplay = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1652026106]
+visible = false
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_ouahc")
+debug_color = Color(0, 0.6, 0.69803923, 0)
+
+[node name="HazardArea" type="Area2D" parent="." unique_id=806919881]
+visible = false
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_grl4e")
+damage = 5.0
+metadata/_custom_type_script = "uid://c8fha3hgcaw2d"
+
+[node name="HazardArea" type="CollisionShape2D" parent="HazardArea" unique_id=682168175]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_yda2a")
+debug_color = Color(0.7019608, 0.02745098, 0, 0)
+
+[node name="DamageArea" type="Area2D" parent="." unique_id=3036549]
+visible = false
+collision_layer = 32
+collision_mask = 0
+script = ExtResource("4_lpon8")
+audio = ExtResource("5_c6m1h")
+metadata/_custom_type_script = "uid://bs41c0tkwh7pl"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea" unique_id=656679071]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_daudc")
+debug_color = Color(0, 0.7019608, 0.039215688, 0)
+
+[node name="EnemyStateMachine" type="Node" parent="." unique_id=2051371217]
+script = ExtResource("6_pdhk0")
+metadata/_custom_type_script = "uid://bxl503rq78gf5"
+
+[node name="ESWalk" type="Node" parent="EnemyStateMachine" unique_id=2052973700]
+unique_name_in_owner = true
+script = ExtResource("7_daudc")
+walk_speed = 0.0
+animation_name = "idle"
+metadata/_custom_type_script = "uid://bt0txeqhfvwl3"
+
+[node name="ESHurt" type="Node" parent="EnemyStateMachine" unique_id=377084201]
+unique_name_in_owner = true
+script = ExtResource("8_e1qaq")
+knockback_strength = 0.0
+animation_name = "idle"
+metadata/_custom_type_script = "uid://bw8en7ewi1l0b"
+
+[node name="ESDeath" type="Node" parent="EnemyStateMachine" unique_id=1970045283]
+unique_name_in_owner = true
+script = ExtResource("9_uwhfc")
+knockback_strength = 0.0
+animation_name = "death"
+metadata/_custom_type_script = "uid://cf5xqfrcq85ho"
+
+[node name="ESAttack" type="Node" parent="EnemyStateMachine" unique_id=1834635069]
+unique_name_in_owner = true
+script = ExtResource("10_4tnyc")
+attack_range = 256.0
+move_speed = 0.0
+animation_name = "attack"
+metadata/_custom_type_script = "uid://do220w2kra3pf"
+
+[node name="DecisionEngineBasicAttack" type="Node" parent="." unique_id=406724946 node_paths=PackedStringArray("attack_state", "chase_state")]
+script = ExtResource("7_3s1m6")
+attack_state = NodePath("../EnemyStateMachine/ESAttack")
+chase_state = NodePath("../EnemyStateMachine/ESWalk")
+metadata/_custom_type_script = "uid://bu4sex68gbpmo"
+
+[node name="PlayerSensor" type="Area2D" parent="." unique_id=815656328]
+position = Vector2(0, -30)
+script = ExtResource("12_bimbk")
+metadata/_custom_type_script = "uid://buhn16p6hktml"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="PlayerSensor" unique_id=463292709]
+polygon = PackedVector2Array(0, 30, 0, -30, 256, -30, 256, 30)
+
+[node name="Projectile_Spawner" type="Marker2D" parent="." unique_id=2107607847]
+position = Vector2(0, -25)
+script = ExtResource("13_oskik")
+projectile = ExtResource("14_enyju")
+metadata/_custom_type_script = "uid://dwxf0o3t1nrij"
+
+[node name="DamageModulate" type="Node2D" parent="." unique_id=1752197235]
+script = ExtResource("15_1rbb8")
+metadata/_custom_type_script = "uid://b4d7wmpw2iyvx"

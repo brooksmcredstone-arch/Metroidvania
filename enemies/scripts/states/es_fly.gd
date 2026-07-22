@@ -6,12 +6,16 @@ var left_limit : float
 var right_limit : float
 
 func enter() -> void:
+	blackboard.can_decide = true
 	_set_limts()
 	var anim : String = animation_name if animation_name else "fly"
 	enemy.play_animation(anim)
 	pass
 func re_enter() -> void:
-	# what happens when we re-enter the state?
+	blackboard.can_decide = true
+	_set_limts()
+	var anim : String = animation_name if animation_name else "fly"
+	enemy.play_animation(anim)
 	pass
 func exit() -> void:
 	# what happens when we exit this state?
