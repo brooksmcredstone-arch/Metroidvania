@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://c13r3acdt0nrq"]
+
+[ext_resource type="Script" uid="uid://ca16nlm5yxodl" path="res://metroidvania_project/general/projectiles/projectile.gd" id="1_tocg3"]
+[ext_resource type="AudioStream" uid="uid://bb2gand7pl0ie" path="res://metroidvania_project/00_global/audio/ui_audio/ui_woosh.wav" id="2_qgthf"]
+[ext_resource type="Texture2D" uid="uid://dojb6gf0tu3y4" path="res://metroidvania_project/general/projectiles/fireball/fireball.png" id="2_tgmre"]
+[ext_resource type="AudioStream" uid="uid://8lo4rs1ksnsb" path="res://metroidvania_project/general/audio/hit.wav" id="3_lpuyv"]
+[ext_resource type="Script" uid="uid://c8fha3hgcaw2d" path="res://metroidvania_project/general/scripts/hazard_area.gd" id="3_qgthf"]
+
+[sub_resource type="Animation" id="Animation_lpuyv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_c0clu"]
+resource_name = "default"
+length = 0.6
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_qgthf"]
+resource_name = "destroy"
+length = 0.6
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ejoc6"]
+_data = {
+&"RESET": SubResource("Animation_lpuyv"),
+&"default": SubResource("Animation_c0clu"),
+&"destroy": SubResource("Animation_qgthf")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fa6h6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nbcc1"]
+
+[sub_resource type="Gradient" id="Gradient_ybsg1"]
+offsets = PackedFloat32Array(0, 0.496063, 0.992126)
+colors = PackedColorArray(1, 0.29819793, 0, 1, 1, 0.45360184, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_b8p5r"]
+gradient = SubResource("Gradient_ybsg1")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[node name="Fireball" type="CharacterBody2D" unique_id=1112035729]
+collision_layer = 0
+collision_mask = 3
+script = ExtResource("1_tocg3")
+horizontal_only = true
+spawn_audio = ExtResource("2_qgthf")
+destroy_audio = ExtResource("3_lpuyv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1130019492]
+position = Vector2(0, -10)
+texture = ExtResource("2_tgmre")
+hframes = 6
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=468474033]
+libraries/ = SubResource("AnimationLibrary_ejoc6")
+autoplay = &"default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=723797769]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_fa6h6")
+debug_color = Color(0.03284751, 0, 0.70196074, 0)
+
+[node name="HazardArea" type="Area2D" parent="." unique_id=671678186]
+unique_name_in_owner = true
+position = Vector2(0, -10)
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_qgthf")
+damage = 5.0
+damage_type = 1
+metadata/_custom_type_script = "uid://c8fha3hgcaw2d"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HazardArea" unique_id=1293945018]
+shape = SubResource("CircleShape2D_nbcc1")
+debug_color = Color(0.69803923, 0, 0.0044142706, 0)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1624680710]
+position = Vector2(0, -10)
+energy = 0.75
+texture = SubResource("GradientTexture2D_b8p5r")
