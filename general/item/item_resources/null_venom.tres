@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dx86fit5ia7t0"]
+
+[ext_resource type="Script" uid="uid://dy6bdhyteu4tg" path="res://metroidvania_project/general/item/item_data.gd" id="1_pto3f"]
+[ext_resource type="Texture2D" uid="uid://bwis18rcrehyc" path="res://metroidvania_project/general/item/sprites/Items.png" id="2_gi6w8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uh71x"]
+atlas = ExtResource("2_gi6w8")
+region = Rect2(172, 4, 8, 20)
+
+[resource]
+script = ExtResource("1_pto3f")
+name = "Null Venom"
+description = "Cures Venom and Poison"
+texture = SubResource("AtlasTexture_uh71x")
+metadata/_custom_type_script = "uid://dy6bdhyteu4tg"

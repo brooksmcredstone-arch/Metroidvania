@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bra5vmm7u81vq"]
+
+[ext_resource type="Script" uid="uid://dy6bdhyteu4tg" path="res://metroidvania_project/general/item/item_data.gd" id="1_sd64n"]
+[ext_resource type="Texture2D" uid="uid://bwis18rcrehyc" path="res://metroidvania_project/general/item/sprites/Items.png" id="2_pgn28"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iw4g0"]
+atlas = ExtResource("2_pgn28")
+region = Rect2(6, 4, 20, 23)
+
+[resource]
+script = ExtResource("1_sd64n")
+name = "Potion"
+description = "Heals 60 HP"
+texture = SubResource("AtlasTexture_iw4g0")
+metadata/_custom_type_script = "uid://dy6bdhyteu4tg"

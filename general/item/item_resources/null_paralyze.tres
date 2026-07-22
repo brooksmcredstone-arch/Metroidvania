@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c5i2nx25h4o5t"]
+
+[ext_resource type="Script" uid="uid://dy6bdhyteu4tg" path="res://metroidvania_project/general/item/item_data.gd" id="1_unht4"]
+[ext_resource type="Texture2D" uid="uid://bwis18rcrehyc" path="res://metroidvania_project/general/item/sprites/Items.png" id="2_cawb4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0v0o"]
+atlas = ExtResource("2_cawb4")
+region = Rect2(204, 4, 8, 20)
+
+[resource]
+script = ExtResource("1_unht4")
+name = "Null Paralyze"
+description = "Cures Paralysis"
+texture = SubResource("AtlasTexture_n0v0o")
+metadata/_custom_type_script = "uid://dy6bdhyteu4tg"

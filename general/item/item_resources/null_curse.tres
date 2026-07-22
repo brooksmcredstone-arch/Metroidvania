@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bc8ic3g3bab82"]
+
+[ext_resource type="Script" uid="uid://dy6bdhyteu4tg" path="res://metroidvania_project/general/item/item_data.gd" id="1_gjj35"]
+[ext_resource type="Texture2D" uid="uid://bwis18rcrehyc" path="res://metroidvania_project/general/item/sprites/Items.png" id="2_xlwse"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aa6t5"]
+atlas = ExtResource("2_xlwse")
+region = Rect2(268, 4, 8, 20)
+
+[resource]
+script = ExtResource("1_gjj35")
+name = "Null Curse"
+description = "Removes Cures"
+texture = SubResource("AtlasTexture_aa6t5")
+metadata/_custom_type_script = "uid://dy6bdhyteu4tg"

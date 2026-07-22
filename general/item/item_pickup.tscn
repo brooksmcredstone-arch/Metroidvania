@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bhlr1x2e6gm58"]
+
+[ext_resource type="Script" uid="uid://dkpb4mt3x32wl" path="res://metroidvania_project/general/item/scripts/item_pickup.gd" id="1_nqahn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mum8y"]
+
+[node name="ItemPickup" type="Area2D" unique_id=1181808620]
+collision_layer = 256
+collision_mask = 16
+script = ExtResource("1_nqahn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=64629690]
+position = Vector2(0, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1912685837]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_mum8y")

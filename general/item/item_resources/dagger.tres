@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bj3y1yd4aohsi"]
+
+[ext_resource type="Script" uid="uid://dy6bdhyteu4tg" path="res://metroidvania_project/general/item/item_data.gd" id="1_p5e00"]
+[ext_resource type="Texture2D" uid="uid://bwis18rcrehyc" path="res://metroidvania_project/general/item/sprites/Items.png" id="2_xmlwf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3hks8"]
+atlas = ExtResource("2_xmlwf")
+region = Rect2(289, 8, 30, 17)
+
+[resource]
+script = ExtResource("1_p5e00")
+name = "Dagger"
+description = "A silver dagger made for throwing"
+texture = SubResource("AtlasTexture_3hks8")
+quantity = 3
+metadata/_custom_type_script = "uid://dy6bdhyteu4tg"
