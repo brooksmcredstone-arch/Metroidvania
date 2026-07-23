@@ -391,7 +391,7 @@ size = Vector2(22, 53)
 [node name="Player" type="CharacterBody2D" unique_id=2102916540 groups=["Player"]]
 z_index = 1
 collision_layer = 16
-collision_mask = 3
+collision_mask = 259
 floor_snap_length = 3.0
 script = ExtResource("1_4flbx")
 
@@ -530,6 +530,7 @@ position = Vector2(0, -27)
 collision_layer = 0
 collision_mask = 96
 script = ExtResource("11_xswrq")
+damage = 10.0
 metadata/_custom_type_script = "uid://cjba4n1r3121v"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=846146979]
@@ -544,6 +545,7 @@ z_index = 1
 collision_layer = 0
 collision_mask = 96
 script = ExtResource("11_xswrq")
+damage = 15.0
 metadata/_custom_type_script = "uid://cjba4n1r3121v"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GroundSlamAttackArea" unique_id=1059789424]
